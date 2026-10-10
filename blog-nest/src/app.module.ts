@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { TagModule } from './tag/tag.module';
 import ormconfig from './ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -13,6 +14,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
 @Module({
   imports: [
     TagModule,
+    UserModule,
     TypeOrmModule.forRoot(ormconfig),
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
