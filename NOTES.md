@@ -80,19 +80,32 @@ NestJS بيعمل `UsersService` **instance** وبيوفرها للـ Controller
 | `@Injectable()` | "ينفع أعمل inject للـ class ده وأعيد استخدامه" | `AppService`                     |
 | `@Module()`     | "البيت اللي فيه كل حاجة"                    | `AppModule`                      |
 
----
+-----
+<div dir="rtl">
 
-## 3. الـ files في `src/`
+كل واحد من التلاتة له شغلة مختلفة. الـ Entity يمثّل الـ table، والـ Repository يكلّم الـ database، والـ DTO يحدد شكل الـ data اللي داخلة أو خارجة من الـ API.
 
-| File                      | وظيفته                                                          |
-| ------------------------- | --------------------------------------------------------------- |
-| `main.ts`                 | نقطة البداية. بيعمل `NestFactory.create(AppModule)` و `app.listen(3000)` |
-| `app.module.ts`           | الـ root module. بيجمّع الـ controllers والـ providers           |
-| `app.controller.ts`       | بيعرّف الـ routes                                               |
-| `app.service.ts`          | بيعرّف الـ methods (الـ logic)                                  |
-| `app.controller.spec.ts`  | الـ unit test للـ controller                                    |
+Repository: الأداة اللي بتكلّم الـ database
 
----
+الـ Entity لوحده class ساكن، مابيعملش حاجة. عشان تقري أو تكتبي في الـ table، محتاجة حاجة تنفذ الـ queries. ده شغل الـ Repository.
+
+constructor(
+  @InjectRepository(TagEntity)
+  private readonly tagRepository: Repository<TagEntity>,
+) {}
+
+وبيديكي methods جاهزة من غير ما تكتبي SQL:
+
+Method	بتعمل إيه	SQL المقابل
+find()	تجيب كل الـ rows	SELECT * FROM tag_entity
+findOne({ where: { id: 1 } })	row واحد	SELECT ... WHERE id = 1
+save(tag)	تضيف أو تعدّل	INSERT / UPDATE
+delete(id)	تمسح	DELETE ... WHERE id = ...
+
+</div>
+
+
+
 
 ## 4. Controller
 
@@ -176,16 +189,3 @@ npm run build        # compile لـ dist/
 
 ---
 
-## 9. أسئلة لسه مش فاهماها
-
-- [ ]
-
----
-
-## Next up (هتتضاف مع الفيديو)
-
-- [ ] TypeORM + PostgreSQL connection
-- [ ] Entity
-- [ ] DTO + validation (`class-validator`)
-- [ ] CRUD endpoints (POST / GET / PATCH / DELETE)
-- [ ] Docker لـ Postgres
